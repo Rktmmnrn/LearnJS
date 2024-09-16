@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Equation 2nd deg</title>
+  <style>
+    * {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    }
+
+    body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgba(255, 0, 0, 0.589);
+    }
+
+    nav {
+    color: white;
+    position: fixed;
+    width: 100%;
+    height: 1.5cm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(53, 45, 45);
+    }
+    nav div {
+        display: flex;
+    }
+    nav div p {
+        margin: 0px 20px;
+    }
+    nav div p a {
+        color: white;
+    }
+    input {
+      width: 1.5cm;
+    }
+    form {
+      width: 100%;
+      padding: 10px 0px;
+      height: 50%;
+    }
+    form .button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <p style="font-size: 1.4em; margin-left: 10px;">Projets <span style="font-style: italic; font-weight: bolder; font-size: 1em;">JS</span></p>
+    <div>
+        <p><a href="../Acceuil.html">Acceuil</a></p>
+        <p><a href="">Equ°2nd deg</a></p>
+        <p><a href="circuit-elec.html">Circuit élec</a></p>
+        <p><a href="panneau-pub.html">Panneau Pub</a></p>
+    </div>
+  </nav>
+
+  <div style="width: 100%; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h2 style="font-weight: bolder; margin-bottom: 20px;">Calcul d'une equation du second dégre</h2>
+    <div style="border: 1px solid black; width: 600px; height: 350px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+      <form action="">
+        <p>On a une equation de la forme Ax² + Bx + C = 0, entré les coefficients A, B et C :</p>
+        <div style="display: flex; flex-direction: column;">
+          <div style="margin: 10px 0px;">
+            <label for="A">A :</label>
+            <input type="text" name="A" id="A">
+            <label for="B">B :</label>
+            <input type="text" name="B" id="B">
+            <label for="C">C :</label>
+            <input type="text" name="C" id="C">
+            <input type="button" value="Résoudre" id="goal" class="button" style="width: 2cm; border-radius: 5px;">
+          </div>
+          <p><span class="x1"></span><span class="x2"></span><span class="x3"></span></p>
+          <input type="reset" class="button" style="background-color: black; color: white;">
+        </div>
+      </form>
+      <div style="border: 2px solid white; width: 95%; height: 50%; padding: 10px 5px; display: flex; flex-direction: column; text-align: center; justify-content: center;">
+        <p class="deb" style="margin: 5px 0px;"></p>
+        <p class="un" style="margin: 5px 0px;"></p>
+        <p class="deux" style="margin: 5px 0px;"></p>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('A').addEventListener('input', () => {
+      document.querySelector('.x1').textContent = `${document.getElementById('A').value}x² +`;
+    });
+    document.getElementById('B').addEventListener('input', () => {
+      document.querySelector('.x2').textContent = ` ${document.getElementById('B').value}x +`;
+    });
+    document.getElementById('C').addEventListener('input', () => {
+      document.querySelector('.x3').textContent = ` ${document.getElementById('C').value} = 0`;
+    });
+
+    document.getElementById('goal').addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const valA = parseInt(document.getElementById('A').value);
+      const valB = parseInt(document.getElementById('B').value);
+      const valC = parseInt(document.getElementById('C').value);
+
+      if (valA === 0 && valB === 0) {
+        console.error('henteo soa');
+        alert('Y a pas d\'équation à résoudre');
+        return;
+      }
+
+      if (valA === 0) {
+        console.log('Equation du 1er degré');
+        const xx = valC / valB;
+        document.querySelector('.deb').innerHTML = `Equation facile`;
+        document.querySelector('.un').innerHTML = `x' = ${xx}`;
+        return;
+      }
+
+      const delta = valB * valB - 4 * valA * valC;
+
+      if (delta > 0) {
+        const racdelt = Math.sqrt(delta);
+        const x1 = (-valB - racdelt) / 2 * valA;
+        const x2 = (-valB + racdelt) / 2 * valA;
+        console.log(racdelt);
+        document.querySelector('.un').style.backgroundColor = 'yellow';
+        document.querySelector('.deux').style.backgroundColor = 'yellow';
+        document.querySelector('.deb').innerHTML = `Il existe une racine double dont :`;
+        document.querySelector('.un').innerHTML = `x' = ${x1}`;
+        document.querySelector('.deux').innerHTML = `x" = ${x2}`;
+      } else if (delta === 0) {
+        const x = -valB / 2 * valA;
+        console.log('delta egale à 0');
+        document.querySelector('.un').style.backgroundColor = 'yellow';
+        document.querySelector('.deb').innerHTML = `Racine double dont :`;
+        document.querySelector('.un').innerHTML = `x' = x" = ${x}`;
+        document.querySelector('.deux').innerHTML = ``;
+      } else {
+        console.log('delta negatif');
+        console.warn('Solution complexe');
+        document.querySelector('.deb').innerHTML = `Solution complexe (Non réel)`;
+        document.querySelector('.un').innerHTML = ``;
+        document.querySelector('.deux').innerHTML = ``;
+        document.querySelector('.deb').style.backgroundColor = 'red';
+        document.querySelector('.deb').style.color= 'white';
+      }
+    })
+  </script>
+</body>
+</html>
